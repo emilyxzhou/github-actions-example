@@ -1,0 +1,41 @@
+name: Checkout multiple repositories
+
+on:
+  push:
+
+jobs:
+  build:
+    name: Checkout multiple repositories
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [ 3.6, 3.7, 3.8 ]
+
+    steps:
+      - name: Checkout this repository
+        uses: actions/checkout@v2
+        with:
+          path: ${{ github.workspace }}/github-actions-example
+
+      - name: Checkout mongodb-statedb
+        uses: actions/checkout@v2
+        with:
+          repository: audrow/mongodb-statedb
+          path: ${{ github.workspace }}/mongodb-statedb
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Setup the project and install dependencies
+        run: |
+          pwd
+          python -m pip install --upgrade pip==20.3.3
+          pip install .
+        working-directory: vision-interaction
+
+      - name: Run tests
+        run: pytest
+        working-directory: vision-interaction/tests
