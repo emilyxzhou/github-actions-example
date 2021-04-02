@@ -34,8 +34,8 @@ jobs:
           pwd
           python -m pip install --upgrade pip==20.3.3
           pip install .
-        working-directory: vision-interaction
+        working-directory: ${{ github.workspace }}/github-actions-example/src/ros_vision_interaction/src/vision-interaction
 
       - name: Run tests
         run: pytest
-        working-directory: vision-interaction/tests
+        working-directory: ${{ github.workspace }}/github-actions-example/src/ros_vision_interaction/src/vision-interaction
